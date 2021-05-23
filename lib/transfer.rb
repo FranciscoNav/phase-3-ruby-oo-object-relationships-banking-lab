@@ -23,7 +23,7 @@ class Transfer
     transfer_amount = self.amount
 
     if self.status == 'pending'
-      if self.sender.balance >= transfer_amount
+      if valid? && self.sender.balance >= transfer_amount
         self.receiver.balance = self.receiver.balance + transfer_amount
         self.sender.balance = self.sender.balance - transfer_amount
         self.status = "complete"
