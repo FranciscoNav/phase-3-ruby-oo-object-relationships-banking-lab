@@ -22,26 +22,28 @@ class Transfer
     # binding.pry
     transfer_amount = self.amount
 
-    # if self.sender.valid?
-    #   self.receiver.balance = self.receiver.balance + transfer_amount
-    #   self.sender.balance = self.sender.balance - transfer_amount
-    #   self.status = "complete"
-    # else
-    #   "Transaction rejected. Please check your account balance."
-    # end
-
-    if self.sender.balance > transfer_amount
-      self.receiver.balance = self.receiver.balance + transfer_amount
-      self.sender.balance = self.sender.balance - transfer_amount
-      self.status = "complete"
+    if self.status == 'pending'
+      if self.sender.balance >= transfer_amount
+        self.receiver.balance = self.receiver.balance + transfer_amount
+        self.sender.balance = self.sender.balance - transfer_amount
+        self.status = "complete"
+      else
+        self.status = "rejected"
+        "Transaction rejected. Please check your account balance."
+      end
     else
-      "Transaction rejected. Please check your account balance."
+      "Transfer already complete " 
     end
 
   end
 
   def reverse_transfer
-    #no arguments
+    transfer_amount = self.amount
+    if self.status == "complete"
+      self.status = "reversed"
+      self.receiver.balance = self.receiver.balance - transfer_amount
+      self.sender.balance = self.sender.balance + transfer_amount
+    end
   end
 
 
